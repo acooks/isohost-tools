@@ -58,12 +58,8 @@ do_add() {
      do_help_add
    fi
 
-   if [ ! -f $2 ] ; then
-     do_help_add
-   fi
-
-   cp $2 ${CFG_DIR}/keys
-   chmod 600 ${CFG_DIR}/keys/$2
+   chmod 600 $2 || do_help_add
+   mv -v $2 ${CFG_DIR}/keys
 }
 
 do_alias() {
