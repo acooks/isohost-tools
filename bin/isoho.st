@@ -17,21 +17,21 @@ Usage: isoho.st <command> [help]
 
 Commands:
   help     - display this helpful information
-  add      - add machine identity to key store 
+  add      - add machine identity to key store
   list     - list machine identities in key store
   alias    - creates an alias for a machine
   remove   - remove alias or machine key
   admin    - launch machine manager
   display  - launch KVM client
   remote   - full remote control, both admin and display
-  shortcut - create desktop shortcuts 
+  shortcut - create desktop shortcuts
 EOM
   exit
 }
 
 do_help_add() {
   cat <<EOM
-Usage: isoho.st add <machine.key> 
+Usage: isoho.st add <machine.key>
 EOM
   exit
 }
@@ -75,7 +75,7 @@ do_alias() {
   fi
   if [ -f ${CFG_DIR}/keys/$3.key ] ; then
     ln -sf ${CFG_DIR}/keys/$3.key ${CFG_DIR}/aliases/$2
-  else 
+  else
     echo -n $3 > ${CFG_DIR}/aliases/$2
   fi
 }
@@ -86,7 +86,7 @@ do_list() {
   for key in `ls ${CFG_DIR}/keys`; do
     n=`echo ${key} | sed s/.key//`
     a=`ls -l ${CFG_DIR}/aliases | grep ${key} | awk '{print $9}'`
-    echo ${n} " " ${a} 
+    echo ${n} " " ${a}
   done
   cd ${CFG_DIR}
   ls -l aliases | awk '/^-/{system("cat aliases/" $9); print "   " $9 " (external)"}'
@@ -100,13 +100,13 @@ do_remove() {
     rm ${CFG_DIR}/aliases/$2
     exit
   fi
- 
+
   if [ -f ${CFG_DIR}/keys/$2.key ] ; then
     a=`ls -l ${CFG_DIR}/aliases | grep $2 | awk '{print $9}'`
     if [ "x${a}" != "x" ] ; then
       rm ${CFG_DIR}/aliases/${a}
     fi
-    
+
     rm ${CFG_DIR}/keys/$2.key
   fi
 }
@@ -116,12 +116,12 @@ get_machine() {
     if [ `ls -l ${CFG_DIR}/keys | wc -l` -eq 2 ] ; then
       m=`ls ${CFG_DIR}/keys | sed s/.key//`
     elif [ `ls -l ${CFG_DIR}/aliases | wc -l` -eq 2 ] ; then
-      m=`ls ${CFG_DIR}/aliases` 
+      m=`ls ${CFG_DIR}/aliases`
     fi
   else
     m=$2
   fi
- 
+
   if [ -L ${CFG_DIR}/aliases/${m} ] ; then
     m=`ls -l ${CFG_DIR}/aliases/${m} | sed s/.*-\>.*keys.// | sed s/.key//`
   elif [ -f ${CFG_DIR}/aliases/${m} ] ; then
@@ -158,15 +158,15 @@ do_display() {
   cert=`mktemp`
 
   ssh ${ssh_opts} ${m}@remote.isoho.st spicy > ${tmp}
-  
+
   if cat ${tmp} | grep ~~~ > /dev/null; then
     echo "isho.st is not powered up, use admin command to switch it on"
     exit 1
   fi
-  
+
   cat ${tmp} | grep -v ^!!! > ${cert}
   spicy_opts=`cat ${tmp} | grep ^!!! | sed s/^!!!//`
- 
+
   rm ${tmp}
 
   spicy ${spicy_opts} --spice-ca-file=${cert} --spice-disable-effects=all --spice-color-depth=16
@@ -179,7 +179,7 @@ do_shortcut() {
     if [ `ls -l ${CFG_DIR}/keys | wc -l` -eq 2 ] ; then
       m=`ls ${CFG_DIR}/keys | sed s/.key//`
     elif [ `ls -l ${CFG_DIR}/aliases | wc -l` -eq 2 ] ; then
-      m=`ls ${CFG_DIR}/aliases` 
+      m=`ls ${CFG_DIR}/aliases`
     fi
   else
     m=$2
@@ -198,7 +198,7 @@ Terminal=true
 Type=Application
 EOM
   chmod u+x ${HOME}/Desktop/${m}.desktop
-  if which gsettings > /dev/null; then 
+  if which gsettings > /dev/null; then
     gsettings set org.gnome.desktop.background show-desktop-icons true
   fi
 }
@@ -231,10 +231,10 @@ case $1 in
   "shortcut")
     do_shortcut $@
   ;;
-  *) 
-    do_help 
+  *)
+    do_help
   ;;
- esac 
+ esac
 
 
 
