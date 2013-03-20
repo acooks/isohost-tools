@@ -6,7 +6,7 @@ isoho.st - remote management script for isoho.st virtual machines
 
 B<isoho.st> help
 
-B<isoho.st> add I<KEY>
+B<isoho.st> add I<KEY> [alias]
 
 B<isoho.st> remove I<IDENTIFIER> | I<ALIAS>
 
@@ -43,7 +43,8 @@ B<isoho.st> add help
 =head2 add 
 
 Adds an L<ssh(1)> private I<KEY> to the local credential store. Keys are distributed to clients by isoho.st
-and must not be renamed, as the machine identity is derived from the key's filename.
+and must not be renamed, as the machine identity is derived from the key's filename. An optional alias for the 
+key may also be provided at the time it is added.
 
 =head3 EXAMPLE
 
