@@ -31,7 +31,7 @@ EOM
 
 do_help_add() {
   cat <<EOM
-Usage: isoho.st add <machine.key>
+Usage: isoho.st add <machine.key> [alias]
 EOM
   exit
 }
@@ -60,6 +60,10 @@ do_add() {
 
    chmod 600 $2 || do_help_add
    mv -v $2 ${CFG_DIR}/keys
+
+   if [ $# -eq 3 ] ; then
+	   do_alias $1 $3 $(basename ${2/.key/});
+   fi
 }
 
 do_alias() {
