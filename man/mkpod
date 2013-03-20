@@ -1,0 +1,2 @@
+#!/bin/bash
+pod2man -c "General Commands Manual" -n isoho.st -r "" $1 $2

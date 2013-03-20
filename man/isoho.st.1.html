@@ -1,0 +1,250 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>isoho.st - remote management script for isoho.st virtual machines</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+<!-- INDEX BEGIN -->
+<div name="index">
+<p><a name="__index__"></a></p>
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#commands">COMMANDS</a></li>
+	<ul>
+
+		<li><a href="#help">help</a></li>
+		<ul>
+
+			<li><a href="#example">EXAMPLE</a></li>
+		</ul>
+
+		<li><a href="#add">add</a></li>
+		<ul>
+
+			<li><a href="#example">EXAMPLE</a></li>
+		</ul>
+
+		<li><a href="#remove">remove</a></li>
+		<ul>
+
+			<li><a href="#examples">EXAMPLES</a></li>
+		</ul>
+
+		<li><a href="#list">list</a></li>
+		<ul>
+
+			<li><a href="#example">EXAMPLE</a></li>
+		</ul>
+
+		<li><a href="#alias">alias</a></li>
+		<ul>
+
+			<li><a href="#example">EXAMPLE</a></li>
+		</ul>
+
+		<li><a href="#admin">admin</a></li>
+		<ul>
+
+			<li><a href="#examples">EXAMPLES</a></li>
+		</ul>
+
+		<li><a href="#display">display</a></li>
+		<ul>
+
+			<li><a href="#examples">EXAMPLES</a></li>
+		</ul>
+
+		<li><a href="#remote">remote</a></li>
+		<ul>
+
+			<li><a href="#examples">EXAMPLES</a></li>
+		</ul>
+
+		<li><a href="#shortcut">shortcut</a></li>
+		<ul>
+
+			<li><a href="#examples">EXAMPLES</a></li>
+		</ul>
+
+	</ul>
+
+	<li><a href="#author">AUTHOR</a></li>
+</ul>
+
+<hr name="index" />
+</div>
+<!-- INDEX END -->
+
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>isoho.st - remote management script for isoho.st virtual machines</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<p><strong>isoho.st</strong> help</p>
+<p><strong>isoho.st</strong> add <em>KEY</em></p>
+<p><strong>isoho.st</strong> remove <em>IDENTIFIER</em> | <em>ALIAS</em></p>
+<p><strong>isoho.st</strong> list</p>
+<p><strong>isoho.st</strong> alias <em>ALIAS</em> <em>IDENTIFIER</em></p>
+<p><strong>isoho.st</strong> admin [<em>NAME</em>]</p>
+<p><strong>isoho.st</strong> display [<em>NAME</em>]</p>
+<p><strong>isoho.st</strong> remote [<em>NAME</em>]</p>
+<p><strong>isoho.st</strong> shortcut [<em>NAME</em>]</p>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>This script is essentially a convenience wrapper for accessing the <em>ssh(1)</em> based management interface 
+as well as the SPICE based remote keyboard, mouse and video display for isoho.st virtual machines. It maintains 
+a local database of machine access keys and provides a useful alias facility for attaching meaningful 
+names to machine identifiers.</p>
+<p>
+</p>
+<hr />
+<h1><a name="commands">COMMANDS</a></h1>
+<p>
+</p>
+<h2><a name="help">help</a></h2>
+<p>Displays a short help message that provides valid script syntax. Most of the commands also support the 
+additional help parameter, although help is also displayed when erroneous syntax is provided by the user.</p>
+<p>
+</p>
+<h3><a name="example">EXAMPLE</a></h3>
+<p><strong>isoho.st</strong> add help</p>
+<p>
+</p>
+<h2><a name="add">add</a></h2>
+<p>Adds an <em>ssh(1)</em> private <em>KEY</em> to the local credential store. Keys are distributed to clients by isoho.st
+and must not be renamed, as the machine identity is derived from the key's filename.</p>
+<p>
+</p>
+<h3><a name="example">EXAMPLE</a></h3>
+<p><strong>isoho.st</strong> add xc0d77e2.key</p>
+<p>
+</p>
+<h2><a name="remove">remove</a></h2>
+<p>Removes a machine key from the local credential store (based on its <em>IDENTIFIER</em>). Alternatively, an <em>ALIAS</em> 
+mapping can also be removed using this command. Removing an alias does not also delete the associated key, 
+however, removing a key will delete any associated alias mappings. To remove a machine key, the machine 
+identifier must be given and not the original key filename that was provided to the <strong>add</strong> command. Use 
+the <strong>list</strong> command to display a list of valid removal targets. External keys cannot be removed by the 
+isho.st script.</p>
+<p>
+</p>
+<h3><a name="examples">EXAMPLES</a></h3>
+<p><strong>isoho.st</strong> remove phobos</p>
+<p><strong>isoho.st</strong> remove xc0d77e2</p>
+<p>
+</p>
+<h2><a name="list">list</a></h2>
+<p>Displays a listing of the keys stored in the local credential store along with any associated aliases. 
+Aliases for machine identifiers with keys external to the isoho.st credential store are denoted 
+&quot;(external)&quot; in the listing.</p>
+<p>
+</p>
+<h3><a name="example">EXAMPLE</a></h3>
+<p><strong>isoho.st</strong> list</p>
+<p>
+</p>
+<h2><a name="alias">alias</a></h2>
+<p>Associates a convenience <em>ALIAS</em> with a key stored in the local credential store. If the key does not exist 
+within the credential store, then it is assumed that the <code>ssh(1)</code> identity associated with the machine account 
+is maintained externally. In such cases, the <em>ALIAS</em> simply serves as a convenience handle so that the machine 
+<em>IDENTIFIER</em> does not need to be remembered.</p>
+<p>
+</p>
+<h3><a name="example">EXAMPLE</a></h3>
+<p><strong>isoho.st</strong> alias phobos xc0d77e2</p>
+<p>
+</p>
+<h2><a name="admin">admin</a></h2>
+<p>The admin command presents a simple menu system via <em>ssh(1)</em> with the following capabilities:</p>
+<ul>
+<li><strong><a name="attach_the_local_terminal_to_the_remote_serial_console" class="item">attach the local terminal to the remote serial console</a></strong>
+
+</li>
+<li><strong><a name="restore_automated_backup_snapshots" class="item">restore automated backup snapshots</a></strong>
+
+</li>
+<li><strong><a name="insert_and_remove_virtual_cdrom_dvd_images" class="item">insert and remove virtual CDROM/DVD images</a></strong>
+
+</li>
+<li><strong><a name="reboot_power_off_and_power_on_the_virtual_machine" class="item">reboot, power off and power on the virtual machine</a></strong>
+
+</li>
+</ul>
+<p>A facility to obtain the connection details for manual configuration of a SPICE client is also provided, 
+however, the <strong>display</strong> command automates this, thus making such manual configuration unnecessary.</p>
+<p>The <em>NAME</em> parameter may be either an <em>ALIAS</em> or a machine <em>IDENTIFIER</em> and can be omitted entirely if
+there is only a single entry in the local credential store.</p>
+<p>
+</p>
+<h3><a name="examples">EXAMPLES</a></h3>
+<p><strong>isoho.st</strong> admin</p>
+<p><strong>isoho.st</strong> admin phobos</p>
+<p><strong>isoho.st</strong> admin xc0d77e2</p>
+<p>
+</p>
+<h2><a name="display">display</a></h2>
+<p>Launches a SPICE client and connects it to the given virtual machine's keyboard, mouse and video (KVM) 
+display. Note that the machine must be in the powered up state using the <strong>admin</strong> interface in order to 
+be able to connect to it.</p>
+<p>The &lt;SHIFT&gt;-&lt;F12&gt; key can be handy in getting you out of trouble if the keyboard and mouse are grabbed 
+exclusively by the client. It will also get you out of full screen mode where &lt;SHIFT&gt;-&lt;F11&gt; doesn't 
+work.</p>
+<p>The <em>NAME</em> parameter may be either an <em>ALIAS</em> or a machine <em>IDENTIFIER</em> and can be omitted entirely if
+there is only a single entry in the local credential store.</p>
+<p>
+</p>
+<h3><a name="examples">EXAMPLES</a></h3>
+<p><strong>isoho.st</strong> display</p>
+<p><strong>isoho.st</strong> display phobos</p>
+<p><strong>isoho.st</strong> display xc0d77e2</p>
+<p>
+</p>
+<h2><a name="remote">remote</a></h2>
+<p>This command is essentially the <strong>admin</strong> and <strong>display</strong> commands combined into a single command that accepts 
+the same parameters. Nothing more, nothing less.</p>
+<p>It is also the default command executed by the desktop shortcut for a virtual machine.</p>
+<p>
+</p>
+<h3><a name="examples">EXAMPLES</a></h3>
+<p><strong>isoho.st</strong> remote</p>
+<p><strong>isoho.st</strong> remote phobos</p>
+<p><strong>isoho.st</strong> remote xc0d77e2</p>
+<p>
+</p>
+<h2><a name="shortcut">shortcut</a></h2>
+<p>Adds a shortcut for the given virtual machine onto the user's desktop. The shortcut will execute the <strong>remote</strong> command.</p>
+<p>Note the caveat regarding the need to have the machine powered on in order for the <strong>display</strong> component of the 
+command to work. If the machine is powered off, first use the <strong>admin</strong> interface to power it on, then exit the 
+admin interface and restart it again from the shortcut.</p>
+<p>The <em>NAME</em> parameter may be either an <em>ALIAS</em> or a machine <em>IDENTIFIER</em> and can be omitted entirely if
+there is only a single entry in the local credential store.</p>
+<p>
+</p>
+<h3><a name="examples">EXAMPLES</a></h3>
+<p><strong>isoho.st</strong> shortcut</p>
+<p><strong>isoho.st</strong> shortcut phobos</p>
+<p><strong>isoho.st</strong> shortcut xc0d77e2</p>
+<p>
+</p>
+<hr />
+<h1><a name="author">AUTHOR</a></h1>
+<p>Edwin Peer</p>
+
+</body>
+
+</html>

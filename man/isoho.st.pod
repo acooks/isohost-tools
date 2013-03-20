@@ -1,0 +1,175 @@
+=head1 NAME
+
+isoho.st - remote management script for isoho.st virtual machines
+
+=head1 SYNOPSIS
+
+B<isoho.st> help
+
+B<isoho.st> add I<KEY>
+
+B<isoho.st> remove I<IDENTIFIER> | I<ALIAS>
+
+B<isoho.st> list
+
+B<isoho.st> alias I<ALIAS> I<IDENTIFIER>
+
+B<isoho.st> admin [I<NAME>] 
+
+B<isoho.st> display [I<NAME>]
+
+B<isoho.st> remote [I<NAME>]
+
+B<isoho.st> shortcut [I<NAME>]
+
+=head1 DESCRIPTION
+
+This script is essentially a convenience wrapper for accessing the L<ssh(1)> based management interface 
+as well as the SPICE based remote keyboard, mouse and video display for isoho.st virtual machines. It maintains 
+a local database of machine access keys and provides a useful alias facility for attaching meaningful 
+names to machine identifiers.
+
+=head1 COMMANDS
+
+=head2 help
+
+Displays a short help message that provides valid script syntax. Most of the commands also support the 
+additional help parameter, although help is also displayed when erroneous syntax is provided by the user.
+
+=head3 EXAMPLE
+
+B<isoho.st> add help
+
+=head2 add 
+
+Adds an L<ssh(1)> private I<KEY> to the local credential store. Keys are distributed to clients by isoho.st
+and must not be renamed, as the machine identity is derived from the key's filename.
+
+=head3 EXAMPLE
+
+B<isoho.st> add xc0d77e2.key
+
+=head2 remove
+
+Removes a machine key from the local credential store (based on its I<IDENTIFIER>). Alternatively, an I<ALIAS> 
+mapping can also be removed using this command. Removing an alias does not also delete the associated key, 
+however, removing a key will delete any associated alias mappings. To remove a machine key, the machine 
+identifier must be given and not the original key filename that was provided to the B<add> command. Use 
+the B<list> command to display a list of valid removal targets. External keys cannot be removed by the 
+isho.st script.
+
+=head3 EXAMPLES
+
+B<isoho.st> remove phobos 
+
+B<isoho.st> remove xc0d77e2
+
+=head2 list
+
+Displays a listing of the keys stored in the local credential store along with any associated aliases. 
+Aliases for machine identifiers with keys external to the isoho.st credential store are denoted 
+"(external)" in the listing.
+
+=head3 EXAMPLE
+
+B<isoho.st> list
+
+=head2 alias
+
+Associates a convenience I<ALIAS> with a key stored in the local credential store. If the key does not exist 
+within the credential store, then it is assumed that the ssh(1) identity associated with the machine account 
+is maintained externally. In such cases, the I<ALIAS> simply serves as a convenience handle so that the machine 
+I<IDENTIFIER> does not need to be remembered.
+
+=head3 EXAMPLE
+
+B<isoho.st> alias phobos xc0d77e2
+
+=head2 admin
+
+The admin command presents a simple menu system via L<ssh(1)> with the following capabilities:
+
+=over 2 
+
+=item * attach the local terminal to the remote serial console  
+
+=item * restore automated backup snapshots
+
+=item * insert and remove virtual CDROM/DVD images
+
+=item * reboot, power off and power on the virtual machine
+
+=back
+
+A facility to obtain the connection details for manual configuration of a SPICE client is also provided, 
+however, the B<display> command automates this, thus making such manual configuration unnecessary.
+
+The I<NAME> parameter may be either an I<ALIAS> or a machine I<IDENTIFIER> and can be omitted entirely if
+there is only a single entry in the local credential store.
+
+=head3 EXAMPLES
+
+B<isoho.st> admin
+
+B<isoho.st> admin phobos
+
+B<isoho.st> admin xc0d77e2
+
+=head2 display
+
+Launches a SPICE client and connects it to the given virtual machine's keyboard, mouse and video (KVM) 
+display. Note that the machine must be in the powered up state using the B<admin> interface in order to 
+be able to connect to it.
+
+The <SHIFT>-<F12> key can be handy in getting you out of trouble if the keyboard and mouse are grabbed 
+exclusively by the client. It will also get you out of full screen mode where <SHIFT>-<F11> doesn't 
+work.
+
+The I<NAME> parameter may be either an I<ALIAS> or a machine I<IDENTIFIER> and can be omitted entirely if
+there is only a single entry in the local credential store.
+
+=head3 EXAMPLES
+
+B<isoho.st> display
+
+B<isoho.st> display phobos
+
+B<isoho.st> display xc0d77e2
+
+=head2 remote
+
+This command is essentially the B<admin> and B<display> commands combined into a single command that accepts 
+the same parameters. Nothing more, nothing less.
+
+It is also the default command executed by the desktop shortcut for a virtual machine.
+
+=head3 EXAMPLES
+
+B<isoho.st> remote
+
+B<isoho.st> remote phobos
+
+B<isoho.st> remote xc0d77e2
+
+=head2 shortcut
+
+Adds a shortcut for the given virtual machine onto the user's desktop. The shortcut will execute the B<remote> command. 
+
+Note the caveat regarding the need to have the machine powered on in order for the B<display> component of the 
+command to work. If the machine is powered off, first use the B<admin> interface to power it on, then exit the 
+admin interface and restart it again from the shortcut.
+
+The I<NAME> parameter may be either an I<ALIAS> or a machine I<IDENTIFIER> and can be omitted entirely if
+there is only a single entry in the local credential store.
+
+=head3 EXAMPLES
+
+B<isoho.st> shortcut
+
+B<isoho.st> shortcut phobos
+
+B<isoho.st> shortcut xc0d77e2
+
+=head1 AUTHOR
+
+Edwin Peer
